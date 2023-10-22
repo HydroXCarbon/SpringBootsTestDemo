@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MRegisterRequest {
-    private String username;
+    private String name;
     private String password;
     private String email;
 }

@@ -21,5 +21,28 @@ public class UserException extends BaseException {
     public static UserException passwordNull() {
         return new UserException("register.password.null");
     }
+
+    // CREATE
+
+    public static UserException createEmailNull() {
+        return new UserException("create.email.null");
+    }
+
+    public static UserException createEmailDuplicate() {
+        return new UserException("create.email.duplicate");
+    }
+
+    public static UserException createUsernameNull() {
+        return new UserException("create.username.null");
+    }
+
+    public static UserException createUsernameDuplicate() {
+        return new UserException("create.username.Duplicate");
+    }
+
+    public static UserException createPasswordNull() {
+        return new UserException("create.password.null");
+    }
+
 }
 
