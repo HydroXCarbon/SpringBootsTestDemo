@@ -3,29 +3,64 @@ package com.backend.business;
 import com.backend.entity.User;
 import com.backend.exception.BaseException;
 import com.backend.exception.FileException;
+import com.backend.exception.UserException;
+import com.backend.mapper.UserMapper;
+import com.backend.model.MLoginRequest;
 import com.backend.model.MRegisterRequest;
+import com.backend.model.MRegisterResponse;
 import com.backend.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class UserBusiness {
 
     private final UserService userService;
 
-    public UserBusiness(UserService userService) {
+    private final UserMapper userMapper;
+
+    public UserBusiness(UserService userService, UserMapper userMapper) {
         this.userService = userService;
+        this.userMapper = userMapper;
     }
 
-    public User register(MRegisterRequest request) throws BaseException {
-        User user = userService.Create(request.getEmail(), request.getPassword(), request.getName());
+    public String login(MLoginRequest request) throws BaseException{
+        // validate
+        if( Objects.isNull(request.getEmail())){
+            throw UserException.loginFailEmailNull();
+        }
 
-        //TODO : mapper
+        if( Objects.isNull(request.getPassword())){
+            throw UserException.loginFailPasswordNull();
+        }
 
-        return user;
+        //verify
+        Optional<User> opt = userService.findByEmail(request.getEmail());
+        if (opt.isEmpty()) {
+            throw UserException.loginFailEmailNotFound();
+        }
+
+        User user = opt.get();
+        if(!userService.matchPassword(request.getPassword(), user.getPassword())){
+            throw UserException.loginFailPasswordIncorrect();
+        }
+
+        // TODO:JWT
+        String token = " JWT ";
+
+        return token;
+    }
+
+    public MRegisterResponse register(MRegisterRequest request) throws BaseException {
+
+        User user = userService.create(request.getEmail(), request.getPassword(), request.getName());
+
+        return  userMapper.toMRegisterResponse(user);
     }
 
     public String uploadProfilePicture(MultipartFile file) throws BaseException {

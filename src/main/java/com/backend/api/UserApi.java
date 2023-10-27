@@ -3,7 +3,9 @@ package com.backend.api;
 import com.backend.business.UserBusiness;
 import com.backend.entity.User;
 import com.backend.exception.BaseException;
+import com.backend.model.MLoginRequest;
 import com.backend.model.MRegisterRequest;
+import com.backend.model.MRegisterResponse;
 import com.backend.model.TestResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +21,17 @@ public class UserApi {
         this.business = business;
     }
 
-    @GetMapping
-    public TestResponse test() {
-
-        TestResponse response = new TestResponse();
-        response.setName("Hi");
-        response.setAge(3);
-
-        return response;
+    @PostMapping
+    @RequestMapping("/login")
+    public ResponseEntity<String> testLogin(@RequestBody MLoginRequest request) throws BaseException {
+        String response = business.login(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
     @RequestMapping("/register")
-    public ResponseEntity<User> testRegister(@RequestBody MRegisterRequest request) throws BaseException {
-        User response = business.register(request);
+    public ResponseEntity<MRegisterResponse> testRegister(@RequestBody MRegisterRequest request) throws BaseException {
+        MRegisterResponse response = business.register(request);
         return ResponseEntity.ok(response);
     }
 
