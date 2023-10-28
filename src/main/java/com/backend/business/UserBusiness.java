@@ -1,5 +1,6 @@
 package com.backend.business;
 
+import com.backend.Util.SecurityUtil;
 import com.backend.entity.User;
 import com.backend.exception.BaseException;
 import com.backend.exception.FileException;
@@ -8,7 +9,11 @@ import com.backend.mapper.UserMapper;
 import com.backend.model.MLoginRequest;
 import com.backend.model.MRegisterRequest;
 import com.backend.model.MRegisterResponse;
+import com.backend.service.TokenService;
 import com.backend.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,9 +29,12 @@ public class UserBusiness {
 
     private final UserMapper userMapper;
 
-    public UserBusiness(UserService userService, UserMapper userMapper) {
+    private final TokenService tokenService;
+
+    public UserBusiness(UserService userService, UserMapper userMapper, TokenService tokenService) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.tokenService = tokenService;
     }
 
     public String login(MLoginRequest request) throws BaseException{
@@ -50,10 +58,24 @@ public class UserBusiness {
             throw UserException.loginFailPasswordIncorrect();
         }
 
-        // TODO:JWT
-        String token = " JWT ";
+        return tokenService.tokenize(user);
+    }
 
-        return token;
+    public String refreshToken() throws BaseException {
+        Optional<String> opt = SecurityUtil.getCurrentUserId();
+        if (opt.isEmpty()) {
+            throw UserException.unauthorized();
+        }
+
+        String userId = opt.get();
+
+        Optional<User> optUser = userService.findById(userId);
+        if (optUser.isEmpty()) {
+            throw UserException.notFound();
+        }
+
+        User user = optUser.get();
+        return tokenService.tokenize(user);
     }
 
     public MRegisterResponse register(MRegisterRequest request) throws BaseException {

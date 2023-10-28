@@ -14,12 +14,12 @@ public class ProductApi {
 
     private final MProductBusiness product;
 
-    public ProductApi(MProductBusiness pruduct) {
-        this.product = pruduct;
+    public ProductApi(MProductBusiness product) {
+        this.product = product;
     }
 
     @GetMapping("/product{id}")
-    public ResponseEntity<String> getProductById(@PathVariable("id") String id)throws BaseException {
+ public ResponseEntity<String> getProductById(@PathVariable("id") String id)throws BaseException {
         String response = product.getProductById(id);
         return ResponseEntity.ok("productId: " + response);
     }

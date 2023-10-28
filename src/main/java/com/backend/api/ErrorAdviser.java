@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @ControllerAdvice
 public class ErrorAdviser {
 
-    @ExceptionHandler(BaseException.class)
+    @ExceptionHandler({BaseException.class, Exception.class, Throwable.class})
     public ResponseEntity<ErrorResponse> handleBaseException(BaseException e) {
         ErrorResponse response = new ErrorResponse();
         response.setError(e.getMessage());
