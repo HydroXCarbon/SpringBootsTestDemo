@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/user/register", "/user/login")
+                        authorize.requestMatchers("/actuator/**","/user/register", "/user/login")
                                 .anonymous().anyRequest().authenticated())
                 .apply(new TokenFilterConfigurer(tokenService));
 
