@@ -12,7 +12,7 @@ public class EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${app.email.from}")
     private String from;
 
     public EmailService(JavaMailSender mailSender) {
@@ -22,7 +22,7 @@ public class EmailService {
     public void send(String to, String subject, String html) {
         MimeMessagePreparator message = mimeMessage -> {
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage);
-            helper.setFrom(from + "@gmail.com");
+            helper.setFrom(from);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(html, true);

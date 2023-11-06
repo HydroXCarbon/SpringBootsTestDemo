@@ -22,7 +22,6 @@ class TestEmailBusiness {
     @Autowired
     private EmailBusiness emailBusiness;
 
-
     @Order(1)
     @Test
     void testSendActivateEmail() throws BaseException {
@@ -34,7 +33,7 @@ class TestEmailBusiness {
 
         String token = "!@#F&^*^&asd";
 
-        String name = "Purin pongapnich";
+        String name = "Hello Purin";
     }
 }
 
