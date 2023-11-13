@@ -30,9 +30,9 @@ public class ChatBusiness {
 
         // Validate message
 
-        final String destination = "chat";
+        final String destination = "/topic/chat";
         ChatMessage payload = new ChatMessage();
-        payload.setFrom("From");
+        payload.setFrom(opt.get());
         payload.setMessage(request.getMessage());
 
         template.convertAndSend(destination, payload);

@@ -7,6 +7,7 @@ import com.backend.exception.FileException;
 import com.backend.exception.UserException;
 import com.backend.mapper.UserMapper;
 import com.backend.model.MLoginRequest;
+import com.backend.model.MLoginResponse;
 import com.backend.model.MRegisterRequest;
 import com.backend.model.MRegisterResponse;
 import com.backend.service.TokenService;
@@ -37,7 +38,7 @@ public class UserBusiness {
         this.tokenService = tokenService;
     }
 
-    public String login(MLoginRequest request) throws BaseException{
+    public MLoginResponse login(MLoginRequest request) throws BaseException{
         // validate
         if( Objects.isNull(request.getEmail())){
             throw UserException.loginFailEmailNull();
@@ -58,7 +59,9 @@ public class UserBusiness {
             throw UserException.loginFailPasswordIncorrect();
         }
 
-        return tokenService.tokenize(user);
+        MLoginResponse response = new MLoginResponse();
+        response.setToken(tokenService.tokenize(user));
+        return response;
     }
 
     public String refreshToken() throws BaseException {
