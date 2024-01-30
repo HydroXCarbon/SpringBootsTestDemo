@@ -1,5 +1,6 @@
 package com.backend;
 
+import com.backend.Util.SecurityUtil;
 import com.backend.business.EmailBusiness;
 import com.backend.entity.Address;
 import com.backend.entity.Social;
@@ -25,7 +26,8 @@ class TestEmailBusiness {
     @Order(1)
     @Test
     void testSendActivateEmail() throws BaseException {
-        emailBusiness.sendActivateUserEmail(TestData.email, TestData.name, TestData.token);
+        String token = SecurityUtil.generateToken();
+        emailBusiness.sendActivateUserEmail(TestData.email, TestData.name, token);
     }
 
     interface TestData {

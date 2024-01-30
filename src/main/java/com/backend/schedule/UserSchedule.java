@@ -17,18 +17,18 @@ public class UserSchedule {
 
     // cron default is UTC
     // set zone to Thailand which is UTC+7
-    @Scheduled(cron = "0 * * * * *", zone = "Asia/Bangkok" )
-    public void testEveryMinute() {
-        log.info("This is a test of the UserSchedule class");
-    }
-
-    @Scheduled(cron = "0 0 0 * * *" )
-    public void testEveryStartOfDay() {
-        log.info("This is a test of the UserSchedule class");
-    }
-
-    @Scheduled(cron = "0 30 10 * * *" )
-    public void testEveryDay10am30min() {
-        log.info("This is a test of the UserSchedule class");
-    }
+//    @Scheduled(cron = "0 * * * * *", zone = "Asia/Bangkok" )
+//    public void testEveryMinute() {
+//        log.info("This is a test of the UserSchedule class");
+//    }
+//
+//    @Scheduled(cron = "0 0 0 * * *" )
+//    public void testEveryStartOfDay() {
+//        log.info("This is a test of the UserSchedule class");
+//    }
+//
+//    @Scheduled(cron = "0 30 10 * * *" )
+//    public void testEveryDay10am30min() {
+//        log.info("This is a test of the UserSchedule class");
+//    }
 }

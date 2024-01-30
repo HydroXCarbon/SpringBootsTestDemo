@@ -1,5 +1,6 @@
 package com.backend.service;
 
+import com.backend.Util.SecurityUtil;
 import com.backend.exception.BaseException;
 import com.backend.exception.UserException;
 import com.backend.repository.UserRepository;
@@ -7,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.backend.entity.User;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -56,7 +59,7 @@ public class UserService {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 
-    public User create(String email, String password, String name)throws BaseException {
+    public User create(String email, String password, String name, String token)throws BaseException {
 
         // validate
         if( Objects.isNull(email)){
@@ -86,7 +89,15 @@ public class UserService {
         entity.setEmail(email);
         entity.setPassword(passwordEncoder.encode(password));
         entity.setName(name);
+        entity.setToken(token);
+        entity.setTokenExpire(nextMinute(30));
         return repository.save(entity);
+    }
+
+    private Date nextMinute(int minute){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, minute);
+        return calendar.getTime();
     }
 
 }

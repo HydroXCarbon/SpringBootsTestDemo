@@ -1,5 +1,6 @@
 package com.backend;
 
+import com.backend.Util.SecurityUtil;
 import com.backend.entity.Address;
 import com.backend.entity.Social;
 import com.backend.entity.User;
@@ -30,8 +31,8 @@ class TestUserService{
     @Order(1)
     @Test
     void testCreate() throws BaseException {
-        User user = userService.create(TestCreateData.email, TestCreateData.password, TestCreateData.name);
-
+        String token = SecurityUtil.generateToken();
+        User user = userService.create(TestCreateData.email, TestCreateData.password, TestCreateData.name, token);
 
         // Check not null
         Assertions.assertNotNull(user);
